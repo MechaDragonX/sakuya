@@ -4,6 +4,6 @@ module.exports = {
 	name: 'failsafe',
 	description: 'Error message for nonexisting commands',
 	execute(message: Discord.Message) {
-        return message.reply('that command doesn\'t exist~!');
+        return message.reply('that command doesn\'t exist~! >_<');
 	}
 };

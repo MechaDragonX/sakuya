@@ -23,11 +23,16 @@ client.on('message', (message: Discord.Message): any => {
     const args: string[] = message.content.slice(prefix.length).split(/ +/);
     const command: string = args.shift().toLowerCase();
 
-    if(command === 'ping') {
-        client.commands.get('ping').execute(message, args);
+    if (!client.commands.has(command))
+        return client.commands.get('failsafe').execute(message);
+
+    try {
+        client.commands.get(command).execute(message, args);
+    } catch (error) {
+        console.error(error);
+        message.reply('there was an error trying to execute that command~! >_<');
     }
-    else
-        client.commands.get('failsafe').execute(message);
+
 });
 
 client.login(token);
