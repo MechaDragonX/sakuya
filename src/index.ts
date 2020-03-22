@@ -5,7 +5,7 @@ const { prefix, token, bannedUsers } = require('../config.json');
 const client: any = new Discord.Client();
 client.commands = new Discord.Collection();
 
-const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.ts'));
+const commandFiles: string[] = fs.readdirSync('./src/commands').filter(file => file.endsWith('.ts'));
 for(const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
@@ -25,7 +25,7 @@ client.on('message', (message: Discord.Message): any => {
 
     if (!client.commands.has(commandName))
         return client.commands.get('failsafe').execute(message);
-    if(bannedUsers.has(message.author.id))
+    if(bannedUsers.includes(message.author.id))
         return;
 
     const command: any = client.commands.get(commandName);
