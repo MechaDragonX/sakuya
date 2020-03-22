@@ -1,0 +1,6 @@
+# VS Code Workspace
+*.code-workspace
+
+# Node Files
+node_modules/
+package-lock.json

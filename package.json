@@ -1,0 +1,34 @@
+{
+  "name": "sakuya",
+  "version": "0.0.1",
+  "description": "A server mangament Discord bot",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "ts-node src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MechaDragonX/sakuya.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "sakuya",
+    "sakuya",
+    "izayoi",
+    "izayoi",
+    "sakuya",
+    "touhou",
+    "maid"
+  ],
+  "author": "Raghav Vivek",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MechaDragonX/sakuya/issues"
+  },
+  "homepage": "https://github.com/MechaDragonX/sakuya#readme",
+  "dependencies": {
+    "@types/node": "^13.9.2",
+    "discord.js": "^12.0.2"
+  }
+}
