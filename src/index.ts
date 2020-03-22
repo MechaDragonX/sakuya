@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as Discord from 'discord.js';
-const { prefix, token } = require('../config.json');
+const { prefix, token, bannedUsers } = require('../config.json');
 
 const client: any = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -21,13 +21,16 @@ client.on('message', (message: Discord.Message): any => {
         return;
     
     const args: string[] = message.content.slice(prefix.length).split(/ +/);
-    const command: string = args.shift().toLowerCase();
+    const commandName: string = args.shift().toLowerCase();
 
-    if (!client.commands.has(command))
+    if (!client.commands.has(commandName))
         return client.commands.get('failsafe').execute(message);
+    if(bannedUsers.has(message.author.id))
+        return;
 
+    const command: any = client.commands.get(commandName);
     try {
-        client.commands.get(command).execute(message, args);
+        command.execute(message, args);
     } catch (error) {
         console.error(error);
         message.reply('there was an error trying to execute that command~! >_<');
