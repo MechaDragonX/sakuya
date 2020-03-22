@@ -19,16 +19,20 @@ client.once('ready', (): any => {
 client.on('message', (message: Discord.Message): any => {
     if(!message.content.startsWith(prefix) || message.author.bot)
         return;
+    if(bannedUsers.includes(message.author.id))
+        return;
     
     const args: string[] = message.content.slice(prefix.length).split(/ +/);
     const commandName: string = args.shift().toLowerCase();
 
     if (!client.commands.has(commandName))
         return client.commands.get('failsafe').execute(message);
-    if(bannedUsers.includes(message.author.id))
-        return;
 
     const command: any = client.commands.get(commandName);
+
+    if(args.length === 1 && args[0].toLowerCase() === 'help')
+        return command.help(message);
+    
     try {
         command.execute(message, args);
     } catch (error) {
