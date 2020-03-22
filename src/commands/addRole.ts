@@ -1,5 +1,4 @@
 import * as Discord from "discord.js";
-const { getUserFromMention, hasMention } = require('../util');
 
 module.exports = {
 	name: 'addRole',
