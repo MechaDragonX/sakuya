@@ -3,12 +3,12 @@ import * as Discord from 'discord.js';
 const { prefix, token, bannedUsers } = require('../config.json');
 
 const client: any = new Discord.Client();
-client.commands = new Discord.Collection();
+const commands: Map<string, object> = new Map<string, object>();
 
 const commandFiles: string[] = fs.readdirSync('./src/commands').filter(file => file.endsWith('.ts'));
 for(const file of commandFiles) {
-	const command = require(`../src/commands/${file}`);
-	client.commands.set(command.name, command);
+	const command = require(`./commands/${file}`);
+	commands.set(command.name, command);
 }
 
 
@@ -26,19 +26,19 @@ client.on('message', (message: Discord.Message): any => {
         return;
     
     const args: string[] = message.content.slice(prefix.length).split(/ +/);
-    const commandName: string = args.shift().toLowerCase();
+    const commandName: string = args.shift();
 
-    if (!client.commands.has(commandName))
+    if (!commands.has(commandName))
         return message.reply('that command doesn\'t exist~! >_<');
 
-    const command: any = client.commands.get(commandName);
+    const command: any = commands.get(commandName);
 
     if(args.length === 1 && args[0].toLowerCase() === 'help')
         return command.help(message);
     
     try {
         command.execute(message, args);
-    } catch (error) {
+    } catch(error) {
         console.error(error);
         message.reply('there was an error trying to execute that command~! >_<');
     }
