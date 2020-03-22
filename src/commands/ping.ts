@@ -4,6 +4,7 @@ module.exports = {
 	name: 'ping',
 	description: 'Ping back a message!',
 	usage: '!ping <message>',
+	helpMessage: '\"Message\" is the message you want me to repeat back to you.',
 	execute(message: Discord.Message, args: string[]) {
 		if(!args.length) {
             return message.reply('Pong!');
@@ -11,6 +12,6 @@ module.exports = {
         return message.channel.send(args.join(' '));
 	},
 	help(message: Discord.Message) {
-		return message.channel.send(`<@${message.author.id}>\nUsage: \`${this.usage}\`\n"Message" is the message you want me to repeat back to you.`)
+		return message.channel.send(`<@${message.author.id}>\nUsage: \`${this.usage}\`\n${this.helpMessage}`)
 	}
 };

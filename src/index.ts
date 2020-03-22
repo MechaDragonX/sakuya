@@ -7,13 +7,16 @@ client.commands = new Discord.Collection();
 
 const commandFiles: string[] = fs.readdirSync('./src/commands').filter(file => file.endsWith('.ts'));
 for(const file of commandFiles) {
-	const command = require(`./commands/${file}`);
+	const command = require(`../src/commands/${file}`);
 	client.commands.set(command.name, command);
 }
 
 
 client.once('ready', (): any => {
-	console.log('Ready!');
+    console.log('Ready!');
+    client.user.setActivity("\"Night of Knights\" at full blast", {
+        type: 'LISTENING'
+    });
 });
 
 client.on('message', (message: Discord.Message): any => {
@@ -26,7 +29,7 @@ client.on('message', (message: Discord.Message): any => {
     const commandName: string = args.shift().toLowerCase();
 
     if (!client.commands.has(commandName))
-        return client.commands.get('failsafe').execute(message);
+        return message.reply('that command doesn\'t exist~! >_<');
 
     const command: any = client.commands.get(commandName);
 
