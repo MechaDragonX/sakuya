@@ -8,5 +8,5 @@ module.exports = {
             return message.reply('Pong!');
         }
         return message.channel.send(args.join(' '));
-	},
+	}
 };
