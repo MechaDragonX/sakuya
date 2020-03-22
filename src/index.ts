@@ -8,11 +8,23 @@ client.once('ready', (): any => {
 });
 
 client.on('message', (message: any) => {
-	if(message.content.startsWith(`${prefix}ping`)) {
-        if(message.content[5] != ' ')
-            message.channel.send('You need to have a space after `!ping`!');
-        else
-            message.channel.send(message.content.slice(6));
+    if(!message.content.startsWith(prefix) || message.author.bot)
+        return;
+    
+    const args: string[] = message.content.slice(prefix.length).split(/ +/);
+    const command: string = args.shift().toLowerCase();
+
+    if(command === 'args-info') {
+        if(!args.length) {
+            return message.reply(`You didn't provide any arguments, ${message.author.username}!`);
+        }
+        return message.channel.send(`Command name: ${command}\nArguments: ${args}`);
+    }
+    if(command === 'ping') {
+        if(!args.length) {
+            return message.reply('Pong!');
+        }
+        return message.channel.send(args.join(' '));
     }
 });
 
