@@ -1,4 +1,3 @@
-import * as fs from 'fs';
 import * as Discord from 'discord.js';
 
 module.exports = {
@@ -7,17 +6,11 @@ module.exports = {
     aliases: ['commands'],
     usage: '!help',
     helpMessage: 'The command you are using now!',
-	execute(message: Discord.Message, args: string[]) {
-        const client: any = new Discord.Client();
-        client.commands = new Discord.Collection();
-        const commandFiles: string[] = fs.readdirSync('./src/commands').filter(file => file.endsWith('.ts'));
-        for(const file of commandFiles) {
-            const command = require(`./commands/${file}`);
-            client.commands.set(command.name, command);
-        }
+	execute(commands: Map<string, any>, message: Discord.Message, args: string[]) {
         const commandHelp: Map<string, string> = new Map<string, string>();
-        for(const command of client.commands) {
-            commandHelp.set(command.usage, command.helpMessage);
+        
+        for(const key in commands) {
+            commandHelp.set(commands.get(key).usage, commands.get(key).helpMessage);
         }
 
         let help: string = '**List of Commands I Can do**\n';
