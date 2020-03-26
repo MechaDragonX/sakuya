@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as Discord from 'discord.js';
 const { prefix, token, bannedUsers } = require('../config.json');
+const { isClean, clean } = require('./clean');
 
 const client: any = new Discord.Client();
 const commands: Map<string, any> = new Map<string, any>();
@@ -18,6 +19,11 @@ client.once('ready', (): any => {
 });
 
 client.on('message', (message: Discord.Message): any => {
+    if(!message.author.bot) {
+        if(!isClean(message))
+            return clean(message);
+    }
+
     if(!message.content.startsWith(prefix) || message.author.bot)
         return;
     if(bannedUsers.includes(message.author.id))
@@ -32,7 +38,7 @@ client.on('message', (message: Discord.Message): any => {
     const command: any = commands.get(commandName);
 
     if(args.length === 1 && args[0].toLowerCase() === 'help')
-        return message.channel.send(`<@${message.author.id}>\nUsage: \`${this.usage}\`\n${this.helpMessage}`);
+        return message.channel.send(`<@${message.author.id}>\nUsage: \`${command.usage}\`\n${command.helpMessage}`);
     
     try {
         command.execute(message, args);
