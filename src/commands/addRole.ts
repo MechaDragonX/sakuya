@@ -68,14 +68,12 @@ module.exports = {
 		if(!args.length) {
             return message.reply('Not enough arguments~! >_<\n Type `!addRole help` for help!');
         }
+        if(!message.mentions.users.size)
+            return message.reply('you didn\' mention any users~! >_<\n Type `!addRole help` for help!');
 
-        if(message.mentions != null) {
-            if(!message.mentions.members.first())
-                return message.reply('you didn\' mention any users~! >_<\n Type `!addRole help` for help!');
-            if(message.mentions.members.size == 1)
-                return await singleUser(message, args);
-            return await multiUser(message, args);
-        }
+        if(message.mentions.members.size == 1)
+            return await singleUser(message, args);
+        return await multiUser(message, args);
 	},
 	help(message: Discord.Message) {
 		return message.channel.send(`<@${message.author.id}>\nUsage: \`${this.usage}\`\n${this.helpMessage}`)
