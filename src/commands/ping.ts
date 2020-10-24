@@ -10,5 +10,11 @@ module.exports = {
             return message.reply('Pong!');
         }
         return message.channel.send(args.join(' '));
-	}
+	},
+	help(message: Discord.Message) {
+		return message.channel.send(`<@${message.author.id}>\nSyntax: \`${this.usage}\`\n${this.helpMessage}`)
+    },
+    toString() {
+        return `${this.name}: ${this.description}\nSyntax: \`${this.usage}\``
+    }
 };

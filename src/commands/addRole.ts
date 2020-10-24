@@ -76,6 +76,9 @@ module.exports = {
         return await multiUser(message, args);
 	},
 	help(message: Discord.Message) {
-		return message.channel.send(`<@${message.author.id}>\nUsage: \`${this.usage}\`\n${this.helpMessage}`)
-	}
+		return message.channel.send(`<@${message.author.id}>\nSyntax: \`${this.usage}\`\n${this.helpMessage}`)
+    },
+    toString() {
+        return `${this.name}: ${this.description}\nSyntax: \`${this.usage}\``
+    }
 };

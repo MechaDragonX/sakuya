@@ -1,5 +1,8 @@
 import * as fs from 'fs';
 import * as Discord from 'discord.js';
+import * as tsSerializer from 'serialize-ts';
+import * as jsSerialize from 'serialize-javascript';
+
 const { prefix, token, bannedUsers } = require('../config.json');
 const { isClean, clean } = require('./clean');
 
@@ -11,7 +14,6 @@ for(const file of commandFiles) {
 	const command: any = require(`./commands/${file}`);
 	commands.set(command.name, command);
 }
-
 
 client.once('ready', (): any => {
     console.log('Ready!');
@@ -36,10 +38,8 @@ client.on('message', (message: Discord.Message): any => {
         return message.reply('that command doesn\'t exist~! >_<');
 
     const command: any = commands.get(commandName);
-
     if(args.length === 1 && args[0].toLowerCase() === 'help')
-        return message.channel.send(`<@${message.author.id}>\nUsage: \`${command.usage}\`\n${command.helpMessage}`);
-    
+        return command.help(message);
     try {
         command.execute(message, args);
     } catch(error) {
