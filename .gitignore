@@ -7,3 +7,6 @@ package-lock.json
 
 # Config
 config.json
+
+# Extra Files
+help.json
