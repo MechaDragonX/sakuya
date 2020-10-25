@@ -1,0 +1,5 @@
+[
+    "addRole: Give users roles\nSyntax: `!addRole <role> <User 1> <User 2>... | !addRole <User> <role 1> <role 2>...`",
+    "help: List all of my commands or info about a specific command.\nSyntax: `!help`",
+    "ping: Ping back a message!\nSyntax: `!ping <message>`"
+]

@@ -1,7 +1,6 @@
 import * as fs from 'fs';
+import * as path from 'path';
 import * as Discord from 'discord.js';
-import * as tsSerializer from 'serialize-ts';
-import * as jsSerialize from 'serialize-javascript';
 
 const { prefix, token, bannedUsers } = require('../config.json');
 const { isClean, clean } = require('./clean');
@@ -14,6 +13,16 @@ for(const file of commandFiles) {
 	const command: any = require(`./commands/${file}`);
 	commands.set(command.name, command);
 }
+
+const help: string[] = new Array<string>();
+commands.forEach((value: any) => {
+    help.push(value.toString())
+});
+fs.writeFile(path.join(__dirname, 'commands', 'help.json'), JSON.stringify(help, null, 4), { flag: 'w' }, (err) => {
+    if (err)
+        throw err;
+    console.log("Help JSON written!");
+});
 
 client.once('ready', (): any => {
     console.log('Ready!');

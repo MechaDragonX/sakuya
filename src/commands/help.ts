@@ -1,4 +1,18 @@
+import * as fs from 'fs';
+import * as path from 'path';
 import * as Discord from 'discord.js';
+
+let helpText: string[];
+// let helpText: string[] = new Array<string>();
+fs.readFile(path.join(__dirname, 'help.json'), (err, data) => {
+    if (err) throw err;
+    helpText = JSON.parse(data.toString());
+    // let parts: string [];
+    // for(let i = 0; i < base.length; i++) {
+    //     parts = base[i].split('\n');
+    //     helpText.push(parts[0], parts[1]);
+    // }
+});
 
 module.exports = {
 	name: 'help',
@@ -6,17 +20,27 @@ module.exports = {
     aliases: ['commands'],
     usage: '!help',
     helpMessage: 'The command you are using now!',
-	execute(commands: Map<string, any>, message: Discord.Message, args: string[]) {
-        const commandHelp: Map<string, string> = new Map<string, string>();
-        
-        for(const key in commands) {
-            commandHelp.set(commands.get(key).usage, commands.get(key).helpMessage);
-        }
+	execute(message: Discord.Message) {
+        let content: string = `<@${message.author.id}>\n`;
+        for(let i = 0; i < helpText.length; i++) {
+            if(i != helpText.length - 1)
+                content += `${helpText[i]} + \n\n`;
+            else
+                content += helpText[i];
 
-        let help: string = '**List of Commands I Can do**\n';
-		commandHelp.forEach(function(key, value) {
-            help = help.concat(`\`${key}\`: ${value}\n`);
-        });
-        message.channel.send(help);
+            // if((i + 1) % 2 == 1)
+            //     content += `${helpText[i]} + \n`;
+            // else if(((i + 1) % 2 == 0) && (i != helpText.length - 1))
+            //     content += `${helpText[i]} + \n\n`;
+            // else
+            //     content += helpText[i];
+        }
+        return message.channel.send(content);
 	},
+	help(message: Discord.Message) {
+		return message.channel.send(`<@${message.author.id}>\nSyntax: \`${this.usage}\`\n${this.helpMessage}`)
+    },
+    toString() {
+        return `${this.name}: ${this.description}\nSyntax: \`${this.usage}\``
+    }
 };
